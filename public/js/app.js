@@ -1698,6 +1698,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1705,8 +1712,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             loginDetails: {
                 email: '',
-                password: ''
-            }
+                password: '',
+                remember: true
+            },
+            errorsEmail: false,
+            errorsPassword: false,
+            emailError: null,
+            passwordError: null
+
         };
     },
 
@@ -1716,7 +1729,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.post('/login', vm.loginDetails).then(function (response) {
                 console.log(response);
             }).catch(function (error) {
-                console.log(error.response);
+                var errors = error.response;
+                console.log(errors);
+                if (errors.data) {
+                    if (errors.data.email) {
+                        vm.errorsEmail = true;
+                        vm.emailError = errors.data.email[0];
+                    }if (errors.data.password) {
+                        vm.errorsPassword = true;
+                        vm.passwordError = errors.data.password[0];
+                    }
+                }
             });
         }
     },
@@ -31820,7 +31843,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "role": "form"
     }
   }, [_c('div', {
-    staticClass: "form-group"
+    staticClass: "form-group",
+    class: {
+      'has-error': _vm.errorsEmail
+    }
   }, [_c('label', {
     staticClass: "col-md-4 control-label",
     attrs: {
@@ -31852,8 +31878,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.loginDetails.email = $event.target.value
       }
     }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group }}"
+  }), _vm._v(" "), (_vm.errorsEmail) ? _c('span', {
+    staticClass: "help-block"
+  }, [_c('strong', [_vm._v(_vm._s(_vm.emailError))])]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group",
+    class: {
+      'has-error': _vm.errorsPassword
+    }
   }, [_c('label', {
     staticClass: "col-md-4 control-label",
     attrs: {
@@ -31884,7 +31915,47 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.loginDetails.password = $event.target.value
       }
     }
-  })])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('div', {
+  }), _vm._v(" "), (_vm.errorsPassword) ? _c('span', {
+    staticClass: "help-block"
+  }, [_c('strong', [_vm._v(_vm._s(_vm.passwordError))])]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('div', {
+    staticClass: "col-md-6 col-md-offset-4"
+  }, [_c('div', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.remember),
+      expression: "remember"
+    }],
+    attrs: {
+      "type": "checkbox",
+      "name": "remember"
+    },
+    domProps: {
+      "checked": Array.isArray(_vm.remember) ? _vm._i(_vm.remember, null) > -1 : (_vm.remember)
+    },
+    on: {
+      "__c": function($event) {
+        var $$a = _vm.remember,
+          $$el = $event.target,
+          $$c = $$el.checked ? (true) : (false);
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$c) {
+            $$i < 0 && (_vm.remember = $$a.concat($$v))
+          } else {
+            $$i > -1 && (_vm.remember = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+          }
+        } else {
+          _vm.remember = $$c
+        }
+      }
+    }
+  }), _vm._v(" Remember Me\n                                    ")])])])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('div', {
     staticClass: "col-md-8 col-md-offset-4"
@@ -31905,15 +31976,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "href": ""
     }
   }, [_vm._v("\n                                    Forgot Your Password?\n                                ")])])])])])])])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "form-group"
-  }, [_c('div', {
-    staticClass: "col-md-6 col-md-offset-4"
-  }, [_c('div', {
-    staticClass: "checkbox"
-  }, [_c('label')])])])
-}]}
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()

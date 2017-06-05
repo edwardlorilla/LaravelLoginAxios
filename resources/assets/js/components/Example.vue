@@ -7,19 +7,26 @@
                     <div class="panel-body">
                         <form class="form-horizontal" role="form">
 
-                            <div class="form-group">
+                            <div class="form-group" :class="{'has-error' : errorsEmail}">
                                 <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
                                 <div class="col-md-6">
                                     <input id="email" type="email" class="form-control" name="email" v-model="loginDetails.email" required autofocus>
+
+                                    <span v-if="errorsEmail" class="help-block">
+                                        <strong>{{emailError}}</strong>
+                                    </span>
                                 </div>
                             </div>
 
-                            <div class="form-group }}">
+                            <div class="form-group" :class="{'has-error' : errorsPassword}">
                                 <label for="password" class="col-md-4 control-label">Password</label>
 
                                 <div class="col-md-6">
                                     <input id="password" type="password" class="form-control" v-model="loginDetails.password" name="password" required>
+                                    <span v-if="errorsPassword" class="help-block">
+                                        <strong>{{passwordError}}</strong>
+                                    </span>
                                 </div>
                             </div>
 
@@ -27,7 +34,7 @@
                                 <div class="col-md-6 col-md-offset-4">
                                     <div class="checkbox">
                                         <label>
-                                            <!--<input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me-->
+                                            <input type="checkbox" v-model="remember"  name="remember" > Remember Me
                                         </label>
                                     </div>
                                 </div>
@@ -60,8 +67,14 @@
             return{
                 loginDetails:{
                     email:'',
-                    password:''
-                }
+                    password:'',
+                    remember:true
+                },
+                errorsEmail: false,
+                errorsPassword: false,
+                emailError:null,
+                passwordError:null
+
             }
         },
         methods:{
@@ -72,7 +85,17 @@
             console.log(response);
             })
             .catch(function (error) {
-            console.log(error.response);
+                var errors = error.response
+                console.log(errors)
+                if(errors.data){
+                    if(errors.data.email){
+                       vm.errorsEmail = true
+                       vm.emailError = errors.data.email[0]
+                    }if(errors.data.password){
+                       vm.errorsPassword = true
+                       vm.passwordError = errors.data.password[0]
+                    }
+                }
             });
         }
         },
