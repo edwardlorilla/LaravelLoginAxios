@@ -1731,13 +1731,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {
                 var errors = error.response;
                 console.log(errors);
-                if (errors.data) {
-                    if (errors.data.email) {
-                        vm.errorsEmail = true;
-                        vm.emailError = errors.data.email[0];
-                    }if (errors.data.password) {
-                        vm.errorsPassword = true;
-                        vm.passwordError = errors.data.password[0];
+                if (errors.statusText === 'Unprocessable Entity') {
+                    if (errors.data) {
+                        if (errors.data.email) {
+                            vm.errorsEmail = true;
+                            vm.emailError = _.isArray(errors.data.email) ? errors.data.email[0] : errors.data.email;
+                        }
+                        if (errors.data.password) {
+                            vm.errorsPassword = true;
+                            vm.passwordError = _.isArray(errors.data.password) ? errors.data.password[0] : errors.data.password;
+                        }
                     }
                 }
             });
@@ -31927,31 +31930,31 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.remember),
-      expression: "remember"
+      value: (_vm.loginDetails.remember),
+      expression: "loginDetails.remember"
     }],
     attrs: {
       "type": "checkbox",
       "name": "remember"
     },
     domProps: {
-      "checked": Array.isArray(_vm.remember) ? _vm._i(_vm.remember, null) > -1 : (_vm.remember)
+      "checked": Array.isArray(_vm.loginDetails.remember) ? _vm._i(_vm.loginDetails.remember, null) > -1 : (_vm.loginDetails.remember)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.remember,
+        var $$a = _vm.loginDetails.remember,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.remember = $$a.concat($$v))
+            $$i < 0 && (_vm.loginDetails.remember = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.remember = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.loginDetails.remember = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.remember = $$c
+          _vm.loginDetails.remember = $$c
         }
       }
     }

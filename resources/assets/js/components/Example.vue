@@ -34,7 +34,7 @@
                                 <div class="col-md-6 col-md-offset-4">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" v-model="remember"  name="remember" > Remember Me
+                                            <input type="checkbox" v-model="loginDetails.remember"  name="remember" > Remember Me
                                         </label>
                                     </div>
                                 </div>
@@ -87,15 +87,19 @@
             .catch(function (error) {
                 var errors = error.response
                 console.log(errors)
-                if(errors.data){
-                    if(errors.data.email){
-                       vm.errorsEmail = true
-                       vm.emailError = errors.data.email[0]
-                    }if(errors.data.password){
-                       vm.errorsPassword = true
-                       vm.passwordError = errors.data.password[0]
+                if(errors.statusText === 'Unprocessable Entity'){
+                    if(errors.data){
+                        if(errors.data.email){
+                           vm.errorsEmail = true
+                           vm.emailError = _.isArray(errors.data.email) ? errors.data.email[0]: errors.data.email
+                        }
+                        if(errors.data.password){
+                           vm.errorsPassword = true
+                           vm.passwordError = _.isArray(errors.data.password) ? errors.data.password[0] : errors.data.password
+                        }
                     }
                 }
+
             });
         }
         },
