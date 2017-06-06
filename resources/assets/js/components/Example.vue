@@ -65,15 +65,15 @@
 
         data(){
             return{
-                loginDetails:{
-                    email:'',
-                    password:'',
-                    remember:true
-                },
-                errorsEmail: false,
-                errorsPassword: false,
-                emailError:null,
-                passwordError:null
+            loginDetails:{
+                email:'',
+                password:'',
+                remember:true
+            },
+            errorsEmail: false,
+            errorsPassword: false,
+            emailError:null,
+            passwordError:null
 
             }
         },
@@ -86,7 +86,6 @@
             })
             .catch(function (error) {
                 var errors = error.response
-                console.log(errors)
                 if(errors.statusText === 'Unprocessable Entity'){
                     if(errors.data){
                         if(errors.data.email){
